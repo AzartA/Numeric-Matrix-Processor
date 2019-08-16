@@ -2,7 +2,7 @@ package processor;
 
 import java.util.Scanner;
 
-public class MatrixtByMatrixMultiplication {
+public class MatrixTransposition {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -13,8 +13,9 @@ public class MatrixtByMatrixMultiplication {
 		
 		while(true) {
 			System.out.println("1. Add matrices\r\n" + 
-					"2. Multiply matrix to a constant\r\n" + 
-					"3. Multiply matrices\r\n" + 
+					"2. Multiply a matrix to a constant\r\n" + 
+					"3. Multiply matrices\r\n" +
+					"4. Transpose a matrix\r\n" + 
 					"0. Exit\r\n Your choice: ");
 			switch (sc.nextInt()) {
 			case 0:
@@ -95,6 +96,53 @@ public class MatrixtByMatrixMultiplication {
 				multiplyMatrices (matrixA, matrixB);
 				System.out.println();
 				break;
+			case 4:
+				System.out.println("1. Main diagonal\r\n" + 
+						"2. Side diagonal\r\n" + 
+						"3. Vertical line\r\n" + 
+						"4. Horizontal line\r\n Your choice: ");
+				int choice = sc.nextInt();
+				if(choice<1 || choice>4) {
+					System.out.println();
+					break;
+				}
+				System.out.println("Enter the size of the matrix: ");
+				n = sc.nextInt();
+				m = sc.nextInt();
+				if(choice<3) {
+					if(n!=m) {
+						System.out.println("ERROR: The matrix mast be square!");
+						System.out.println();
+						break;
+					}
+				}
+				matrixA = new double [n][m];
+				System.out.println("Enter the matrix:");
+				for(int i = 0; i<n; i++) {
+					for(int j = 0; j<m; j++) {
+						matrixA[i][j] = sc.nextDouble();
+					}
+				};
+				System.out.println("The matrix transposition is: ");
+				switch (choice) {
+				case 1:
+					matrixTranspositionMain(matrixA);
+					System.out.println();
+					break;
+				case 2:
+					matrixTranspositionSide(matrixA);
+					break;
+				case 3:
+					matrixTranspositionVertical(matrixA);
+					break;
+				case 4:
+					matrixTranspositionHorisontal(matrixA);
+					break;
+				default:
+					break;
+				}
+				
+				
 			default:
 				break;
 			}
@@ -102,6 +150,37 @@ public class MatrixtByMatrixMultiplication {
 		}
 	}
 	
+	private static void matrixTranspositionVertical(double[][] matrix) {
+		for(int i = 0; i<matrix.length; i++) {
+			for(int j = 0; j<matrix[0].length; j++) {
+				System.out.print(matrix[i][matrix[0].length-1-j]);
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+	}
+	
+	private static void matrixTranspositionHorisontal(double[][] matrix) {
+		for(int i = 0; i<matrix.length; i++) {
+			for(int j = 0; j<matrix[0].length; j++) {
+				System.out.print(matrix[matrix.length-1-i][j]);
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+	}
+
+	static void matrixTranspositionSide(double[][] matrix) {
+		for(int i = 0; i<matrix.length; i++) {
+			for(int j = 0; j<matrix.length; j++) {
+				System.out.print(matrix[matrix.length-1-j][matrix.length-1-i]);
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+		
+	}
+
 	static void addMatrices(double[][] matrixA, double[][] matrixB) {
 		for(int i = 0; i<matrixA.length; i++) {
 			for(int j = 0; j<matrixA[0].length; j++) {
@@ -131,6 +210,16 @@ public class MatrixtByMatrixMultiplication {
 				}
 				System.out.print(resMatrix);
 				resMatrix = 0;
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+	}
+	
+	static void matrixTranspositionMain(double[][] matrix) {
+		for(int i = 0; i<matrix.length; i++) {
+			for(int j = 0; j<matrix.length; j++) {
+				System.out.print(matrix[j][i]);
 				System.out.print(" ");
 			}
 			System.out.println();
