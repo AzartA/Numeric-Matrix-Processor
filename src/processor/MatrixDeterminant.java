@@ -2,7 +2,7 @@ package processor;
 
 import java.util.Scanner;
 
-public class MatrixTransposition {
+public class MatrixDeterminant {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -16,6 +16,7 @@ public class MatrixTransposition {
 					"2. Multiply a matrix to a constant\r\n" + 
 					"3. Multiply matrices\r\n" +
 					"4. Transpose a matrix\r\n" + 
+					"5. Calculate a determinant\r\n" + 
 					"0. Exit\r\n Your choice: ");
 			switch (sc.nextInt()) {
 			case 0:
@@ -141,8 +142,27 @@ public class MatrixTransposition {
 				default:
 					break;
 				}
+				break;
+			case 5:
 				
-				
+				System.out.println("Enter the size of the matrix: ");
+				n = sc.nextInt();
+				if(n!=sc.nextInt()) {
+					System.out.println("ERROR: The matrix mast be square!");
+					System.out.println();
+					break;
+				}
+				matrixA = new double [n][n];
+				System.out.println("Enter the matrix:");
+				for(int i = 0; i<n; i++) {
+					for(int j = 0; j<n; j++) {
+						matrixA[i][j] = sc.nextDouble();
+					}
+				};
+				System.out.println("The determinant of the matrix is: ");
+				System.out.println(matrixDeterminant(matrixA));
+				System.out.println();
+				break;
 			default:
 				break;
 			}
@@ -150,6 +170,38 @@ public class MatrixTransposition {
 		}
 	}
 	
+	private static double matrixDeterminant(double[][] matrixA) {
+		int n = matrixA.length;
+		if (n == 1 ) {return matrixA[0][0];}
+		if (n == 2 ) {
+			return matrixA[0][0]*matrixA[1][1]-matrixA[0][1]*matrixA[1][0];
+		}
+		double det = 0;
+		double[][] matrixB = new double [n-1][n-1];
+		for(int j = 0; j<n; j++) {
+			matrixB = MinorMatrixBy1row(matrixA, j);
+			det+= (j%2==0?1:-1)*matrixA[0][j]*matrixDeterminant(matrixB);
+		}
+		
+		return det;
+	}
+	
+	private static double[][] MinorMatrixBy1row(double[][] matrixA, int jIndex) {
+		int n = matrixA.length;
+		double[][] matrixB = new double [n-1][n-1];
+		for(int i = 1; i<n; i++) {
+			for(int j = 0, k = 0; j<n; j++, k++) {
+				if(jIndex == j) {
+					k--;
+					continue;
+				}
+				matrixB[i-1][k] = matrixA[i][j];
+			}
+		};
+		return matrixB;
+	}
+	
+
 	private static void matrixTranspositionVertical(double[][] matrix) {
 		for(int i = 0; i<matrix.length; i++) {
 			for(int j = 0; j<matrix[0].length; j++) {
